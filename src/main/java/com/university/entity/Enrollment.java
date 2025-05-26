@@ -1,5 +1,6 @@
 package com.university.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -16,7 +17,8 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(name = "class_id")
-    private Course courses;
+    @JsonBackReference
+    private Course course;
 
     @ManyToOne
     @JoinColumn(name = "student_id")

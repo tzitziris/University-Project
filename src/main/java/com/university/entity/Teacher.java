@@ -1,5 +1,6 @@
 package com.university.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Teacher {
     private String email;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Course> classes = new ArrayList<>();
 
     public void setId(int id) {

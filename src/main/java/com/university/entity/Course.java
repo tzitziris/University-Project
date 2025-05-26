@@ -1,29 +1,38 @@
 package com.university.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
-@Table(name = "class")
+@Table(name="class")
 public class Course {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
-    @Column(name = "title", length = 255)
+    @Column(name="title")
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
+    @JsonBackReference
     private Teacher teacher;
 
+    @OneToMany(mappedBy = "course",
+            cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public void setId(int id) {
         this.id = id;
