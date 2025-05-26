@@ -1,85 +1,54 @@
 package com.university.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
-import com.university.service.StudentService;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
 import com.university.entity.Student;
+import com.university.service.StudentService;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/students")
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/students")
+//@CrossOrigin(origins = "http://localhost:3000") // Αν React τρέχει τοπικά
 public class StudentController {
 
-    private StudentService studentService;
+    private final StudentService studentService;
 
     public StudentController(StudentService theStudentService) {
         studentService = theStudentService;
     }
 
-    // add mapping for "/list"
-
-    @GetMapping("/list")
-    public String listStudents(Model theModel) {
-
-        // get the students from db
-        List<Student> theStudents = studentService.findAll();
-
-        // add to the spring model
-        theModel.addAttribute("students", theStudents);
-
-        return "students/list-students";
+    // GET all students
+    @GetMapping
+    public List<Student> getAllStudents() {
+        return studentService.findAll();
     }
 
-    @GetMapping("/showFormForAdd")
-    public String showFormForAdd(Model theModel) {
-
-        // create model attribute to bind form data
-        Student theStudent = new Student();
-
-        theModel.addAttribute("student", theStudent);
-
-        return "students/student-form";
+    // GET one student by id
+    @GetMapping("/{id}")
+    public Student getStudentById(@PathVariable int id) {
+        return studentService.findById(id);
     }
 
-    @PostMapping("/showFormForUpdate")
-    public String showFormForUpdate(@RequestParam("studentId") int theId, Model theModel) {
-
-        // get the employee from the service
-        Student theStudent = studentService.findById(theId);
-
-        // set employee as a model attribute to pre-populate the form
-        theModel.addAttribute("student", theStudent);
-
-        // send over to our form
-        return "students/student-form";
+    // POST - create new student
+    @PostMapping
+    public Student createStudent(@RequestBody Student theStudent) {
+        theStudent.setId(0); // force creation
+        return studentService.save(theStudent);
     }
 
-    @PostMapping("/save")
-    public String saveStudent(@ModelAttribute("student") Student theStudent) {
-
-        // save the employee
-        studentService.save(theStudent);
-
-        // use a redirect to prevent duplicate submissions
-        return "redirect:/students/list";
+    // PUT - update student
+    @PutMapping
+    public Student updateStudent(@RequestBody Student theStudent) {
+        return studentService.save(theStudent);
     }
 
-    @PostMapping("/delete")
-    public String delete(@RequestParam("studentId") int theId) {
-
-        // delete the employee
-        studentService.deleteById(theId);
-
-        // redirect to /employees/list
-        return "redirect:/students/list";
-
+    // DELETE - delete student by id
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable int id) {
+        studentService.deleteById(id);
+        return "Deleted student with id: " + id;
     }
 }
-

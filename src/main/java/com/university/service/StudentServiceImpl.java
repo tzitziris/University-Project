@@ -41,8 +41,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void save(Student theStudent) {
-        studentRepository.save(theStudent);
+    public Student save(Student theStudent) {
+        return studentRepository.save(theStudent);
     }
 
     @Override

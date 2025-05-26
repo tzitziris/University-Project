@@ -1,10 +1,15 @@
 package com.university.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name="student")
 public class Student {
@@ -23,6 +28,11 @@ public class Student {
     @Column(name="email")
     private String email;
 
+    @OneToMany(mappedBy = "student",
+               cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Enrollment> enrollments = new ArrayList<>();
+
     public Student() { }
 
     public Student(int id, String firstName, String lastName, String email) {
@@ -38,12 +48,12 @@ public class Student {
         this.email = email;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -69,7 +79,6 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     @Override
     public String toString() {

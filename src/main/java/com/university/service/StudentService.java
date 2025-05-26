@@ -11,7 +11,7 @@ public interface StudentService {
 
     Student findById(int theId);
 
-    void save(Student theStudent);
+    Student save(Student theStudent);
 
     void deleteById(int theId);
 
