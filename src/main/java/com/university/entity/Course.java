@@ -4,37 +4,46 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@Entity
-@Table(name="class")
+@Table(name = "course")
 public class Course {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="title")
     private String title;
+
+    private String description;
+
+    @OneToMany(mappedBy = "course")
+    @JsonManagedReference(value = "course-enrollments")
+    private List<Enrollment> enrollments;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     @JsonBackReference
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "course",
-            cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Enrollment> enrollments = new ArrayList<>();
+    public String getTitle() {
+        return title;
+    }
+
+    // Also consider adding a setter if needed
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public void setId(int id) {
         this.id = id;
     }
 }
+
+
+

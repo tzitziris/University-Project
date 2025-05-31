@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/teachers")
-//@CrossOrigin(origins = "http://localhost:3000") // Ενεργοποίησέ το αν χρειάζεται
+@CrossOrigin(origins = "http://localhost:5173/")
 public class TeacherController {
 
     private final TeacherService teacherService;
