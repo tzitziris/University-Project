@@ -28,6 +28,9 @@ public class Teacher {
     @Column(name="email")
     private String email;
 
+    @Column(name="Secialization")
+    private String specialization;
+
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Course> classes = new ArrayList<>();

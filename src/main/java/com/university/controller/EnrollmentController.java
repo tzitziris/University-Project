@@ -1,11 +1,13 @@
 package com.university.controller;
 
+import com.university.dao.EnrollmentRepository;
 import com.university.dto.EnrollmentDTO;
 import com.university.entity.Enrollment;
 import com.university.service.EnrollmentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/enrollments")
@@ -13,33 +15,53 @@ import java.util.List;
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;
+    private final EnrollmentRepository enrollmentRepository;
 
-    public EnrollmentController(EnrollmentService enrollmentService) {
+    public EnrollmentController(EnrollmentService enrollmentService, EnrollmentRepository enrollmentRepository) {
         this.enrollmentService = enrollmentService;
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     @GetMapping("/dto")
     public List<EnrollmentDTO> getAllEnrollmentsDto() {
-        return enrollmentService.findAll().stream().map(enrollment -> {
-            String studentName = "";
-            String courseTitle = "";
-
+        return enrollmentRepository.findAll().stream().map(enrollment -> {
+            EnrollmentDTO dto = new EnrollmentDTO();
+            dto.setId(enrollment.getId());
+            dto.setEnrollmentDate(enrollment.getEnrollmentDate().toString());
             if (enrollment.getStudent() != null) {
-                studentName = enrollment.getStudent().getFirstName() + " " + enrollment.getStudent().getLastName();
+                dto.setStudentId(enrollment.getStudent().getId());
+                dto.setStudentName(enrollment.getStudent().getFirstName() + " " + enrollment.getStudent().getLastName());
             }
-
             if (enrollment.getCourse() != null) {
-                courseTitle = enrollment.getCourse().getTitle();
+                dto.setCourseId(enrollment.getCourse().getId());
+                dto.setCourseTitle(enrollment.getCourse().getTitle());
             }
-
-            return new EnrollmentDTO(
-                    enrollment.getId(),
-                    enrollment.getEnrollmentDate() != null ? enrollment.getEnrollmentDate().toString() : null,
-                    studentName,
-                    courseTitle
-            );
-        }).toList();
+            return dto;
+        }).collect(Collectors.toList());
     }
+
+//    @GetMapping("/dto")
+//    public List<EnrollmentDTO> getAllEnrollmentsDto() {
+//        return enrollmentService.findAll().stream().map(enrollment -> {
+//            String studentName = "";
+//            String courseTitle = "";
+//
+//            if (enrollment.getStudent() != null) {
+//                studentName = enrollment.getStudent().getFirstName() + " " + enrollment.getStudent().getLastName();
+//            }
+//
+//            if (enrollment.getCourse() != null) {
+//                courseTitle = enrollment.getCourse().getTitle();
+//            }
+//
+//            return new EnrollmentDTO(
+//                    enrollment.getId(),
+//                    enrollment.getEnrollmentDate() != null ? enrollment.getEnrollmentDate().toString() : null,
+//                    studentName,
+//                    courseTitle
+//            );
+//        }).toList();
+//    }
 
     // GET all enrollments
     @GetMapping

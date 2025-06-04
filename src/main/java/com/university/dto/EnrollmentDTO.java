@@ -1,10 +1,18 @@
 package com.university.dto;
 
 public class EnrollmentDTO {
+//    private int id;
+//    private String enrollmentDate;
+//    private String studentName;
+//    private String courseTitle;
     private int id;
-    private String enrollmentDate;
+    private int studentId;
     private String studentName;
+    private int courseId;
     private String courseTitle;
+    private String enrollmentDate;
+
+    public EnrollmentDTO() {}
 
     public EnrollmentDTO(int id, String enrollmentDate, String studentName, String courseTitle) {
         this.id = id;
@@ -13,12 +21,33 @@ public class EnrollmentDTO {
         this.courseTitle = courseTitle;
     }
 
-    public int getId() {
-        return id;
+    public EnrollmentDTO(int id, int studentId, String studentName, int courseId, String courseTitle, String enrollmentDate) {
+        this.id = id;
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.courseId = courseId;
+        this.courseTitle = courseTitle;
+        this.enrollmentDate = enrollmentDate;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public String getEnrollmentDate() {

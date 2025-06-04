@@ -35,7 +35,6 @@ public class Course {
         return title;
     }
 
-    // Also consider adding a setter if needed
     public void setTitle(String title) {
         this.title = title;
     }
