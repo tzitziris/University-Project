@@ -13,9 +13,9 @@ It provides a REST API for managing students, teachers, courses, and enrollments
 
 ## Technologies
 
-- Java 21
+- Java 17+  
 - Spring Boot (Web, Data JPA)  
-- MySQL Database   
+- H2 Database / MySQL / PostgreSQL (depending on configuration)  
 - REST API  
 
 ---
@@ -30,4 +30,11 @@ The application provides the following functionalities:
 - **Enrollments:** Create, read, update, delete
 
 All data is transferred in JSON format.
-```
+
+---
+
+## Getting Started
+
+1. Clone the repository:
+```bash
+https://github.com/tzitziris/University-Project-Backend-SpringBoot.git
