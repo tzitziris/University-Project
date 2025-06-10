@@ -30,3 +30,4 @@ The application provides the following functionalities:
 - **Enrollments:** Create, read, update, delete
 
 All data is transferred in JSON format.
+```
