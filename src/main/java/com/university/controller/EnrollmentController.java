@@ -1,8 +1,12 @@
 package com.university.controller;
 
+import com.university.dao.CourseRepository;
 import com.university.dao.EnrollmentRepository;
+import com.university.dao.StudentRepository;
 import com.university.dto.EnrollmentDTO;
+import com.university.entity.Course;
 import com.university.entity.Enrollment;
+import com.university.entity.Student;
 import com.university.service.EnrollmentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +20,14 @@ public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;
     private final EnrollmentRepository enrollmentRepository;
+    private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
-    public EnrollmentController(EnrollmentService enrollmentService, EnrollmentRepository enrollmentRepository) {
+    public EnrollmentController(EnrollmentService enrollmentService, EnrollmentRepository enrollmentRepository, StudentRepository studentRepository, CourseRepository courseRepository) {
         this.enrollmentService = enrollmentService;
         this.enrollmentRepository = enrollmentRepository;
+        this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     @GetMapping("/dto")
@@ -40,29 +48,6 @@ public class EnrollmentController {
         }).collect(Collectors.toList());
     }
 
-//    @GetMapping("/dto")
-//    public List<EnrollmentDTO> getAllEnrollmentsDto() {
-//        return enrollmentService.findAll().stream().map(enrollment -> {
-//            String studentName = "";
-//            String courseTitle = "";
-//
-//            if (enrollment.getStudent() != null) {
-//                studentName = enrollment.getStudent().getFirstName() + " " + enrollment.getStudent().getLastName();
-//            }
-//
-//            if (enrollment.getCourse() != null) {
-//                courseTitle = enrollment.getCourse().getTitle();
-//            }
-//
-//            return new EnrollmentDTO(
-//                    enrollment.getId(),
-//                    enrollment.getEnrollmentDate() != null ? enrollment.getEnrollmentDate().toString() : null,
-//                    studentName,
-//                    courseTitle
-//            );
-//        }).toList();
-//    }
-
     // GET all enrollments
     @GetMapping
     public List<Enrollment> getAllEnrollments() {
@@ -78,6 +63,18 @@ public class EnrollmentController {
     // POST - create new enrollment
     @PostMapping
     public Enrollment createEnrollment(@RequestBody Enrollment enrollment) {
+        // Φέρε τα πραγματικά entities από τη βάση
+        int studentId = enrollment.getStudent().getId();
+        int courseId = enrollment.getCourse().getId();
+
+        // Χρησιμοποιείς το EntityManager ή ένα StudentRepository/CourseRepository
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // Βάλε τα σωστά managed entities
+        enrollment.setStudent(student);
+        enrollment.setCourse(course);
+
         enrollment.setId(0); // force insert
         return enrollmentService.save(enrollment);
     }

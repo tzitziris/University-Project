@@ -28,7 +28,7 @@ public class Teacher {
     @Column(name="email")
     private String email;
 
-    @Column(name="Secialization")
+    @Column(name="Specialization")
     private String specialization;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)

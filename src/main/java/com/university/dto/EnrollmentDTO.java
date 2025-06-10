@@ -1,10 +1,8 @@
 package com.university.dto;
 
-public class EnrollmentDTO {
-//    private int id;
-//    private String enrollmentDate;
-//    private String studentName;
-//    private String courseTitle;
+import java.io.Serializable;
+
+public class EnrollmentDTO implements Serializable {
     private int id;
     private int studentId;
     private String studentName;
@@ -32,6 +30,10 @@ public class EnrollmentDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getStudentId() {
@@ -72,5 +74,17 @@ public class EnrollmentDTO {
 
     public void setCourseTitle(String courseTitle) {
         this.courseTitle = courseTitle;
+    }
+
+    @Override
+    public String toString() {
+        return "EnrollmentDTO{" +
+                "id=" + id +
+                ", studentId=" + studentId +
+                ", studentName='" + studentName + '\'' +
+                ", courseId=" + courseId +
+                ", courseTitle='" + courseTitle + '\'' +
+                ", enrollmentDate='" + enrollmentDate + '\'' +
+                '}';
     }
 }
