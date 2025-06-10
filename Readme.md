@@ -15,7 +15,7 @@ It provides a REST API for managing students, teachers, courses, and enrollments
 
 - Java 21  
 - Spring Boot (Web, Data JPA)  
-- H2 Database / MySQL / PostgreSQL (depending on configuration)  
+- MySQL Database  
 - REST API  
 
 ---
